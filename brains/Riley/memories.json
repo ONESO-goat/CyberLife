@@ -1,0 +1,22 @@
+[
+  {
+    "content": "First day at new school",
+    "emotion": "neutral",
+    "importance": 0.5,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "dtype": "<f8",
+      "shape": [
+        10
+      ]
+    },
+    "emotional_intensity": 0.8,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "dtype": "<f8",
+      "shape": [
+        10
+      ]
+    }
+  }
+]
