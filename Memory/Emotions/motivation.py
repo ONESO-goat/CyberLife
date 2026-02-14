@@ -56,7 +56,7 @@ class Motivation:
         """Look into why the motivation."""
         if self.is_database(self.Thoughts):
             """Soon 'databases' can be looked into."""
-            self.Thoughts.query.get(emotion[0])
+            self.Thoughts.query.get()
     
     def is_database(self, system) -> NotImplementedError:
         """Check if system is a database."""

@@ -244,7 +244,7 @@ cyberlife/
 ├── docs/              # Documentation
 └── research/          # Papers and notes
 ```
-
+# note this is predicted, not the actual structure
 ---
 
 ## 🚀 Getting Started

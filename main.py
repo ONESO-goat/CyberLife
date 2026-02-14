@@ -29,21 +29,16 @@ if __name__ == "__main__":
     memory_system = EmotionalCalling(brain.mind, brain, emotions)
     print(f"✓ Created: {brain}\n")
     print(f"Name: {brain.achieve_name()}\n")
-
+    content = "I just finished my big game and made alot of friends doing so."
+    stuff = {
+        'emotion': 'proud',
+        'intensity': 0.8
+    }
     # Store emotional memory
     memory_system.encode_memory(
-        content="First day at new school",
-        emotion_data={'emotion': 'nervous', 'intensity': 0.8}
+        content=content,
+        emotion_data=stuff
     )
-
-    # Emotion levels update
-    print(emotions.Fear.level)  # Increased because "nervous" matches Fear
-
-    # Recall based on mood
-    current_mood = emotions.get_dominant_emotion().name.lower()
-    relevant_memories = memory_system.emotional_recall(current_mood)
-
-    # Regulate emotions over time
-    emotions.regulate()  # Fee
+    
     
             

@@ -64,3 +64,9 @@ with open(test, 'w') as f:
 with open(test, 'r') as f:
     gang = json_numpy.load(f)
 print(gang)
+
+test33 = []
+em = []
+for i in test33:
+    em.append(i)
+print(em)

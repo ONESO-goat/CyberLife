@@ -39,33 +39,43 @@ class EmotionalCalling:
         self.storage = storage
         self.emotions = emotions  # RileyAnderson instance
         
-    def encode_memory(self, content: str, emotion_data: Dict, add_timestamp: bool = False):
+    def encode_memory(self, content: str, emotion_data: Dict, add_timestamp: bool = True):
         """
         Store memory with emotional tagging.
         
         Like in Inside Out - Joy creates happy memories,
         Sadness creates sad memories, etc.
         """
+        print("="*50)
+        print(f"INSIDE [encode_memory] in memory_systems.py\n")
+        print("="*50)
         # Detect which emotion this is
         dominant_emotion = self._detect_dominant_emotion(emotion_data)
-        
+        emotion = emotion_data['emotion']
         # Emotional memories are stronger
         importance = self._calculate_importance(emotion_data, dominant_emotion)
         
         # Store with emotion tag
         memory = {
             'content': content,
-            'emotion': dominant_emotion,
+            'dominant_emotion': dominant_emotion,
+            'emotion': emotion,
             'importance': importance,
-            'motivation': np.zeros(10), # placeholder for now
+            'motivation': np.zeros(5), # placeholder for now
             'emotional_intensity': emotion_data.get('intensity', 0.5), # tempory
-            'emotion_intensity_REAL': np.zeros(10)
+            'emotion_intensity_REAL': np.zeros(5)
 
         }
+        print(f"CURRENT MEMORY {memory}\n")
+        
+        print("MAKING NEW MEMORY...\n")
+        memory = self.emotions.emotion_query(memory)
+        print(f"NEW MEMORY SUCCESS {memory}\n")
         if add_timestamp:
-            memory['timestamp'] = datetime.utcnow().isoformat()
-
+                    memory['timestamp'] = datetime.utcnow().isoformat()
+        print("ADDING MEMORY...\n")
         self.storage.add(memory)
+        print("ADDED")
         
         # Update emotion levels
     

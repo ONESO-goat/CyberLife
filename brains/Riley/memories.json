@@ -1,22 +1,39 @@
 [
   {
-    "content": "First day at new school",
-    "emotion": "neutral",
-    "importance": 0.5,
+    "content": "I just finished my big game and made alot of friends doing so.",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.9,
     "motivation": {
-      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
       "dtype": "<f8",
       "shape": [
-        10
+        5
       ]
     },
     "emotional_intensity": 0.8,
     "emotion_intensity_REAL": {
-      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
       "dtype": "<f8",
       "shape": [
-        10
+        5
       ]
-    }
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-14T16:33:23.123603"
   }
 ]
