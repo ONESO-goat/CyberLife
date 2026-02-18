@@ -1,5 +1,7 @@
 Row 0: Prefrontal Control (Cognitive Regulation)
-Brain regions: Prefrontal cortex, anterior cingulate cortexWhat it does:
+Brain regions: Prefrontal cortex, anterior cingulate cortex
+
+What it does:
 
 Regulates emotional intensity
 Reappraises situations ("It's not that bad")

@@ -65,8 +65,5 @@ with open(test, 'r') as f:
     gang = json_numpy.load(f)
 print(gang)
 
-test33 = []
-em = []
-for i in test33:
-    em.append(i)
-print(em)
+test33 = {'hi':5}
+print(len(test33))

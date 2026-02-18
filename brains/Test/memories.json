@@ -1,0 +1,496 @@
+[
+  {
+    "id": "5277aecf-113d-40cd-a61c-743e76ff7314",
+    "content": "I finished reading a whole book in one day!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.7,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.4,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T03:57:42.508908"
+  },
+  {
+    "id": "a4b14f37-8140-47c5-b3b4-e78a4cabe299",
+    "content": "I stayed consistent with my goals this week!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.75,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.5,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T03:58:24.591475"
+  },
+  {
+    "id": "83088bef-afce-4fa1-8eb9-c6e7eaf38d54",
+    "content": "I will be attending college soon.",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.95,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.9,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:02:06.018896"
+  },
+  {
+    "id": "87911302-2997-4864-9519-ff75e49ecf75",
+    "content": "I solved a problem that had me stuck for hours!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.65,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.3,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:12:31.908519"
+  },
+  {
+    "id": "cadcb2e8-d0e8-4a58-9ac3-937b39d94847",
+    "content": "I organized my schedule and feel super productive!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 1.0,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 1,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:28:15.882245"
+  },
+  {
+    "id": "447b70fb-a642-4dff-9129-570b5de4a344",
+    "content": "I tried something new today and loved it!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.6,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.2,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:29:25.434322"
+  },
+  {
+    "id": "340255fd-afb4-4fb2-989a-7f7d31e2d32c",
+    "content": "I made a new friend today!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.8,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.6,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:32:51.438195"
+  },
+  {
+    "id": "ee317377-9099-4b00-8451-3266a6dbf4fc",
+    "content": "I finished reading a whole book in one day!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 1.0,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 1,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:33:51.378834"
+  },
+  {
+    "id": "5335143e-c7ab-4fa4-9d7b-ee8ac690284c",
+    "content": "I learned how to cook a brand new recipe!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.8,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.6,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:44:27.313083"
+  },
+  {
+    "id": "1bb61a94-3405-4118-b4ba-727701477064",
+    "content": "I was able to speak my mind the other day!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.9,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.8,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:45:46.587577"
+  },
+  {
+    "id": "52c7a404-2aef-4aa0-847a-7e7de03b2488",
+    "content": "I woke up early and actually felt energized!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.8,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.6,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:49:32.589281"
+  },
+  {
+    "id": "5ba1bca4-e730-4c47-b488-476f902ddfa5",
+    "content": "I reached 10,000 followers today!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 1.0,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 1,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:50:21.506802"
+  },
+  {
+    "id": "a71daba1-5e76-4c4b-942b-6d503d2085f8",
+    "content": "I finally reached rank diamond in overwatch!",
+    "dominant_emotion": "happy",
+    "emotion": {
+      "pride": {
+        "regulation": {
+          "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "dtype": "<f8",
+          "shape": [
+            4,
+            4
+          ]
+        }
+      }
+    },
+    "importance": 0.55,
+    "motivation": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "emotional_intensity": 0.1,
+    "emotion_intensity_REAL": {
+      "__numpy__": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+      "dtype": "<f8",
+      "shape": [
+        5
+      ]
+    },
+    "priority": {
+      "1": 1.0
+    },
+    "why_this_feeling": "You feel this way for an unknown reason.",
+    "timestamp": "2026-02-18T04:52:54.922505"
+  }
+]

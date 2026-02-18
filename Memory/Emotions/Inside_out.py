@@ -229,7 +229,7 @@ class Joy(Emotion):
             if not emotion:
                 raise ValueError(f"missing emotion key: {data}") 
             data['emotion'] = {
-                PRIDE: {"regulation": np.zeros((4,4))}
+                PRIDE: {"regulation": np.array(np.zeros((4,4)), dtype=np.float64)}
             }
             
             """Emotions can vary. should look like this:
@@ -365,7 +365,7 @@ class Sadness(Emotion):
             if not emotion:
                 raise ValueError(f"missing emotion key: {data}") 
             data['emotion'] = {
-                UPSET: {"regulation": np.zeros((4,4))}
+                UPSET: {"regulation": np.array(np.zeros((4,4)), dtype=np.float64)}
             }
 
             """Emotions can vary. should look like this:
@@ -1449,6 +1449,26 @@ class RileyAnderson:
         """Emotions decay over time (return to baseline)."""
         for emotion in self.emotions:
             emotion.level *= 0.95  # 5% decay
+    def why(self, 
+            memory: Dict[str, str], 
+            string: str, 
+            auto_add: bool = False, 
+            separate: bool = False) -> Optional[Dict[str, Any]]:
+        """Return jsonifed version on your 'why' behind a memory.\n
+        auto_add: adds the new 'why' to database, updating current memory.\n
+        separate: return just the 'why' instead the entire memory.
+        """
+
+        memory['why'] = string
+        if auto_add:
+            ...
+        
+        if separate:
+            why_to_json = {
+                'why': string
+            }
+            return why_to_json
+        
     
     def __repr__(self) -> str:
         mood = self.get_mood()

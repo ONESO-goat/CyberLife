@@ -1,5 +1,6 @@
-from typing import List, Dict
+from typing import List, Dict, Any
 from datetime import datetime
+import uuid
 import numpy as np
 
 
@@ -57,6 +58,7 @@ class EmotionalCalling:
         
         # Store with emotion tag
         memory = {
+            'id': str(uuid.uuid4()),
             'content': content,
             'dominant_emotion': dominant_emotion,
             'emotion': emotion,
@@ -133,7 +135,7 @@ class EmotionalCalling:
         
         Like when Sadness touches Joy's memories in the movie.
         """
-        memory = self.storage.get_by_id(memory_id)
+        memory = self.storage.find(memory_id)
         if memory:
             old_emotion = memory['emotion']
             memory['emotion'] = new_emotion
@@ -174,6 +176,11 @@ class EmotionalCalling:
         
         # Return mood-congruent memories first
         return mood_matched + others
+    def get_memory_id(self, memory: Dict[str, Any]):
+        id = memory.get('id', '')
+        if id.strip() == '':
+            raise ValueError(f"Data doesn't have vald id structure: {memory}")
+        return id
 
         
 if __name__ == "__main__":
