@@ -1,14 +1,21 @@
+# BrainAnmaly.py
+
 
 import numpy as np
 import importlib as lib
 from Excepts_and_hints import ValidEmotion, NoArgumentCalled_or_AllNone
 import uuid
+from BrainAnomaly._structure import _Structure
 from datetime import datetime
 import matplotlib.pyplot as plt
 from typing import Any, Tuple, Dict, List, Optional
 import json_numpy as J
 from pathlib import Path
+from numpy_utils.numpy_helpers import deserialize_numpy
 from matplotlib.patches import Circle
+from Drive.Enthusiasm import Enthusiasm
+
+from _TypeDict import _Brain_
 
 
 """
@@ -58,6 +65,7 @@ class BrainAnomaly():
         
         self.brain_size = pounds
         self.power = watts
+        
 
         # Avoid tedious work to manually changing size if program scales
         self.max = 20
@@ -117,7 +125,7 @@ class BrainAnomaly():
 
 
 class Brain(BrainAnomaly):
-    def __init__(self, 
+    def __init__(self,
                 pounds: float = 0.005, 
                 watts: float = 1.0, 
                 name: str = 'bob', 
@@ -131,6 +139,7 @@ class Brain(BrainAnomaly):
         self.name: str = name.strip().capitalize()
 
         #self._create_config_()
+        
         self.mind = Storage(self.get_brain_data(), size=storage_size)
         """Storage"""
 
@@ -269,7 +278,9 @@ class Brain(BrainAnomaly):
         
         plt.title(f"{self.name}'s Brain - {len(memories)} memories")
         plt.show()
-    def remember(self, content: str, 
+
+    def remember(self, 
+                 content: str, 
                  emotion: str = 'neutral', 
                  importance: float = 0.5, 
                  motivation = np.zeros(4)
@@ -283,6 +294,7 @@ class Brain(BrainAnomaly):
             'timestamp': datetime.now().isoformat()
         }
         self.mind.add(memory)
+
     
     def forget(self, memory_item: Dict[str, Any]) -> None:
         """Remove a memory."""
@@ -302,10 +314,11 @@ class Brain(BrainAnomaly):
         return [m for m in self.mind.memories if m.get('emotion') == emotion]
     
     def get_memory_row(self, row: int, emotion: Optional[str] = None)-> np.ndarray:
-        """Gte selection of memories on emotion."""
+        """Get selection of memories on emotion."""
         if emotion is not None:
            return self.mind.memories[row]['emotion'][emotion.lower()]['regulation'] 
-        return self.mind.memories[row]['emotion']['pride']['regulation']
+        emotion = list(self.mind.memories[row]['emotion'].keys())[0]
+        return self.mind.memories[row]['emotion'][emotion]['regulation']
     
     
     
@@ -427,6 +440,7 @@ class Storage():
             
             self.memory_file = self.brain_dir / 'memories.json'
             self.config_file = self.brain_dir / 'config.json'
+            self.warning_check: bool = True
 
             self._load_or_create()
 
@@ -434,16 +448,23 @@ class Storage():
             """Load existing data or create new."""
             if self.memory_file.exists():
                 with open(self.memory_file, 'r') as f:
-                    self.memories: List[Dict[str, Any]]= J.load(f)
+                    data = J.load(f)
+                    
+                    self._make_writable_recursive(data)
+                    self.memories = data
+                    # self.memories: List[Dict[str, Any]]= J.load(f)
             else:
-                self.memories: List[Dict[str, Any]] = []
+                _structre = _Structure()
+                structre = _structre._create_structure(name=self.name)
+                self.memories: List[Dict[str, Any]] = [structre]
                 self.commit()
 
         def add(self, item: Dict[str, Any], auto_save: bool = True):
             if self.STORAGE_size - len(self.memories) <= 0:
                 raise MemoryError("You have ran out of space. Please free some space or upgrade.")
             
-            self.memories.append(item)
+            self.memories[0]['brain']['mind'].append(item)
+
             if auto_save:
                 self.commit()
         
@@ -459,15 +480,22 @@ class Storage():
         def replace(self, old: Dict, new: Dict, auto_save: bool = True):
             """Replace information inside the 'mind' with different data.
             """
+            print(f"IN REPLACE\n")
             if not old or not new:
                 raise ValueError("Please insert items")
             if isinstance(old, dict) and isinstance(new, dict):
                 try:
-                    for index in range(len(self.memories)):
-                        if self.memories[index]['id'] == old['id']:
-                            self.memories[index] = new
-                        else:
-                            raise ValueError(f"Couldn't find a matching dataset in existing database. OLD: {old}")
+                    for data in self.memories[0]['brain']['mind']:
+                        print(f"LOOPING IN  REPLACE\n")
+                        if data['id'] == old['id']:
+                            self.memories[0]['brain']['mind'].remove(data)
+                            for key, value in new.items():
+                                print(f"KEY: {key}, VALUE: {value}\n")
+                                data[key] = new[key]
+                                print(f"NEW DATA: {data}\n")
+                            self.memories[0]['brain']['mind'].append(data)
+                            break
+
                 except RuntimeError:
                     raise RuntimeError("Invalid structure between old and new data. Must be memory structure") 
                 
@@ -483,16 +511,22 @@ class Storage():
                  by_emotion: ValidEmotion | None = None, 
                  id: Optional[uuid.UUID | str] = None, 
                  visualize: bool = False):
-
+            print(f"IN FIND, ID: {id}\n")
             if id is not None:
-                for data in self.memories:
+                print("ID IS NOT NONE\n")
+                for data in self.memories[0]['brain']['mind']:
+                    print(f"LOOPING LOOPING\n")
+                    print(f"DATA: {data}")
+                    print(f"ID: {data['id']}")
                     if data['id'] == id:
+                        print(f"MATCH: {data}\n")
                         return data
+                    
                     
             elif event is not None:
                 import re
                 potential_matches = {}
-                for data in self.memories:
+                for data in self.memories[0]['mind']:
                     match_ = re.findall(event, data['content'], re.IGNORECASE)
                     if match_:
                         potential_matches['dominat_emotion'] = data['dominant_emotion']
@@ -526,7 +560,7 @@ class Storage():
 
                 potential_matches = {}
                 text = ""
-                for data in self.memories:
+                for data in self.memories[0]['mind']:
                     if data['dominant_emotion'] == by_emotion:
                         potential_matches['dominat_emotion'] = data['dominant_emotion']
                         potential_matches['id'] = data['id']
@@ -557,7 +591,14 @@ class Storage():
                 return text
             else:
                 raise NoArgumentCalled_or_AllNone("All arguments None. Please insert method for search.")
-                    
+        
+
+        def update_main_goal(self):
+            """Find and set main goal based on enthusiasm."""
+            enthusiasm = Enthusiasm(self)
+            enthusiasm._find_main_goal()
+
+
         def exists(self, args: object | None = None, 
                    where_to_look: str = 'memories',
                    id: Optional[uuid.UUID | str] = None) -> bool:
@@ -568,7 +609,7 @@ class Storage():
             
             if id is not None:
                 if where_to_look.lower() == 'memories':
-                    for dataset in self.memories:
+                    for dataset in self.memories[0]['brain']['mind']:
                         if dataset['id'] == id:
                             return True
                         else:
@@ -585,7 +626,11 @@ class Storage():
         def get_all(self) -> List[Dict[str, Any]]:
             """Get all memories."""
             
-            return self.memories 
+            return self.memories[0]['brain']['mind']
+        
+        def achieve(self):
+            """Obtain the entire brain."""
+            return self.memories
         
 
         def free(self, amount=10):
@@ -606,7 +651,6 @@ class Storage():
             space =  self.STORAGE_size - len(self.memories)
             if space <= 0:
                 print(f"space left: {space}\n")
-                print(f"memories space {self.memories}")
                 return False 
             print(f"space left: {space}")
             return True
@@ -640,127 +684,103 @@ class Storage():
             self.STORAGE_size = new_size
 
         def read_numpy(self, id: str):
-            for data in self.memories:
-                if data['id'] == id:
+            for data in self.memories[0]['brain']['mind']:
+                print("READING NUMPY.......\n")
+                if data["id"] == id:
+                    print("FOUND MATCH\n")
                     emotion = list(data.get('emotion', 0).keys())[0]
                     if not emotion:
                         raise KeyError("While reading numpy, dataset couldn't be achieved.")
                     
                     return data['emotion'][emotion]['regulation']
-                else:
-                    raise MemoryError(f"Memory doesn't exist: {id}")
                 
-        def massRevert(self, copy_or_new: Any, get_copy: bool = True) -> Optional[List[Dict[str, Any]]]:
-            """revert object to copy or new data.
+        def _revert_warning(self, old_brain, new_brain):
+            """Warning prompted when user is effecting data inside the base, even if small
+            this warning should always take effect to confirm."""
+            if self.warning_check:
+                print("="*50)
+                print(f"DATA")
+                print("="*50)
+                print()
+                print(f"-"*50)
+                print(f"OLD")
+                print('-'*50)
+                print()
+                print(f"{old_brain}")
+                print()
+                print("-"*50)
+                print("NEW")
+                print('-'*50)
+                print()
+                print(f"{new_brain}\n")
+                print(f"\nYOU ARE GOING TO REVERT CHANGES, YOU WILL 'NOT' BE ABLE TO CHANGE BACK AFTER CONFIRMING\n") 
+                user = input("CONFIRM CHANGE? (Y/N)\n # if you don't want this anymore, set (warning_check) to False -note that it will always save changes.")
+                if user.lower() == 'y':
+                    try:
+                        self.revert(copy_or_new=new_brain)
+                        self.commit()
+                    except Exception as e:
+                        raise Exception(f"unexpected error when reverting data: {e}")
+                else:
+                    print("revert process cancelled")
+                    return
+            else:
+                try:
+                    self.revert(copy_or_new=new_brain)
+                    self.commit()
+                    print("revert process successful ✓") 
+                except Exception as e:
+                    raise Exception(f"unexpected error when reverting data: {e}") 
+                
+        def _make_writable_recursive(self, obj):
+            """Recursively make all numpy arrays writable."""
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        # Check if numpy array
+                        if '__numpy__' in value:
+                            # Deserialize and ensure writable
+                            arr = deserialize_numpy(value)
+                            arr = np.array(arr, dtype=np.float64)  # Fresh copy
+                            arr.flags.writeable = True
+                            obj[key] = arr
+                        else:
+                            self._make_writable_recursive(value)
+                    elif isinstance(obj, list):
+                        for item in value:
+                            if isinstance(item, dict):
+                                self._make_writable_recursive(item)
+            
+        def revert(self, 
+                   copy_or_new: list[dict[str, _Brain_]], 
+                   get_copy: bool = True,
+                   ) -> Optional[List[Dict[str, Any]]]:
+            """revert entire brain to copy or new data.
 
                 get_copy: if True, return the new copy
             """
             self.memories = copy_or_new
             if get_copy:
                 return self.memories
+            
+        def get_inspiration(self):
+            return self.memories[0]['enthusiasm']['inspiration']
+        
+        def get_motivation(self):
+            return self.memories[0]['enthusiasm']['motivation']
         
         def get_capacity(self) -> int:
             return self.STORAGE_size
 
         def get_used(self) -> int:
-            return len(self.memories)
+            return len(self.memories[0]['brain']['mind'])
         
         def get_current_memories(self) -> List[Dict[str, Any]]:
-            return self.memories
+            return self.memories[0]['brain']['mind']
 
         def get_free(self) -> int:
-            return self.STORAGE_size - len(self.memories)
+            return self.STORAGE_size - len(self.memories[0]['brain']['mind'])
         
 
                 
-                
-
-
-if __name__ == "__main__":
-    from datetime import datetime
-    
-    print("="*60)
-    print("CYBERLIFE BRAIN SYSTEM - COMPREHENSIVE TEST")
-    print("="*60)
-    
-    # Test 1: Basic creation
-    print("\n[TEST 1] Creating brain...")
-    brain = Brain(name="Alice", pounds=3.0, watts=20.0, storage_size=10)
-    print(f"✓ Created: {brain}")
-    
-    # Test 2: Add memories with helper method
-    print("\n[TEST 2] Storing memories...")
-    test_memories = [
-        ("First conversation", "curious", 0.8),
-        ("Learned about classes", "excited", 0.7),
-        ("Made a syntax error", "frustrated", 0.4),
-        ("Fixed the bug!", "happy", 0.9),
-        ("Reading docs", "neutral", 0.3),
-    ]
-    
-    for content, emotion, importance in test_memories:
-        brain.remember(content, emotion, importance)
-        print(f"  ✓ Stored: {content[:30]}...")
-    
-    print(f"\nTotal memories: {brain.get_memory_count()}/{brain.mind.get_capacity()}")
-    
-    # Test 3: Query by emotion
-    print("\n[TEST 3] Querying memories...")
-    happy_memories = brain.get_memories_by_emotion("happy")
-    print(f"Happy memories: {len(happy_memories)}")
-    for mem in happy_memories:
-        print(f"  • {mem['content']}")
-    
-    # Test 4: Power adjustments
-    print("\n[TEST 4] Adjusting brain power...")
-    print(f"Initial: {brain.get_power()}W")
-    brain.increase(by=10.0)
-    print(f"After +10W: {brain.get_power()}W")
-    brain.reduce(by=5.0)
-    print(f"After -5W: {brain.get_power()}W")
-    
-    # Test 5: Visualization
-    print("\n[TEST 5] Generating visualization...")
-    brain.showcase(mode="2D")
-    
-    # Test 6: Storage limits
-    print("\n[TEST 6] Testing storage capacity...")
-    try:
-        for i in range(20):
-            brain.remember(f"Extra memory {i}", "neutral", 0.1)
-    except MemoryError as e:
-        print(f"✓ Storage limit enforced: {e}")
-    
-    # Test 7: Error handling
-    print("\n[TEST 7] Testing error handling...")
-    errors_caught = 0
-    
-    try:
-        bad1 = Brain(name="", pounds=3.0)
-    except ValueError:
-        errors_caught += 1
-    
-    try:
-        bad2 = Brain(name="Bad@Name", pounds=3.0)
-    except ValueError:
-        errors_caught += 1
-    
-    try:
-        bad3 = Brain(name="Bob", pounds=50.0)
-    except ValueError:
-        errors_caught += 1
-    
-    print(f"✓ Caught {errors_caught}/3 invalid inputs")
-    brain = Brain(name="Test")
-
-    # Simulate thinking (activates forebrain)
-    brain.stimulate_region('forebrain', 0.5)
-
-    # Simulate sensory input (activates midbrain)
-    brain.stimulate_region('midbrain', 0.3)
-
-    print(brain.get_brain_state())
-    # {'forebrain': 0.5, 'midbrain': 0.3, 'hindbrain': 0.0}
-    print("\n" + "="*60)
-    print(f"FINAL STATE: {brain}")
-    print("="*60)
+ 

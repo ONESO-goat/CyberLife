@@ -1,4 +1,4 @@
-# memory_systems.py (add these helper functions)
+# numpy_helpers.py
 
 import numpy as np
 import base64

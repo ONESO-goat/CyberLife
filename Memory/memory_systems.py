@@ -1,3 +1,5 @@
+# memory_systems.py
+
 from typing import List, Dict, Any
 from datetime import datetime
 import uuid
@@ -5,7 +7,7 @@ import numpy as np
 
 
 class CyberMemory():
-    def __init__(self, storage, Brain, emotions):
+    def __init__(self, storage, Brain, emotions, enthusiasm):
         # TODO 
         """
         Docstring for __init__
@@ -16,11 +18,13 @@ class CyberMemory():
 
 
         """
+
         self.Brain = Brain
         self.memory = [{}]
         self.storage = storage
         self.IS = emotions
         self.was = emotions
+        self.enthusiasm = enthusiasm
 
     def __repr__(self) -> str:
         return f"""CyberMemory(storage='{self.storage}', Brain={self.Brain}, 
@@ -40,16 +44,14 @@ class EmotionalCalling:
         self.storage = storage
         self.emotions = emotions  # RileyAnderson instance
         
-    def encode_memory(self, content: str, emotion_data: Dict, add_timestamp: bool = True):
+    def encode_memory(self, content: str, emotion_data: Dict, add_timestamp: bool = False):
         """
         Store memory with emotional tagging.
         
         Like in Inside Out - Joy creates happy memories,
         Sadness creates sad memories, etc.
         """
-        print("="*50)
-        print(f"INSIDE [encode_memory] in memory_systems.py\n")
-        print("="*50)
+
         # Detect which emotion this is
         dominant_emotion = self._detect_dominant_emotion(emotion_data)
         emotion = emotion_data['emotion']
@@ -62,22 +64,24 @@ class EmotionalCalling:
             'content': content,
             'dominant_emotion': dominant_emotion,
             'emotion': emotion,
-            'importance': importance,
-            'motivation': np.zeros(5), # placeholder for now
-            'emotional_intensity': emotion_data.get('intensity', 0.5), # tempory
-            'emotion_intensity_REAL': np.zeros(5)
+            'importance': importance, 
+            'Enthusiasm': {
+                'motivation': np.zeros((3, 4)),
+                'inspiration': np.zeros((3,4))
+            }, # placeholder for now
+            'association': {}
 
         }
-        print(f"CURRENT MEMORY {memory}\n")
-        
-        print("MAKING NEW MEMORY...\n")
+
+
         memory = self.emotions.emotion_query(memory)
-        print(f"NEW MEMORY SUCCESS {memory}\n")
+
         if add_timestamp:
-                    memory['timestamp'] = datetime.utcnow().isoformat()
-        print("ADDING MEMORY...\n")
+            print(memory['timestamp'])
+            memory['timestamp'] = datetime.utcnow().isoformat()
+
         self.storage.add(memory)
-        print("ADDED")
+
         
         # Update emotion levels
     
@@ -182,6 +186,3 @@ class EmotionalCalling:
             raise ValueError(f"Data doesn't have vald id structure: {memory}")
         return id
 
-        
-if __name__ == "__main__":
-    pass

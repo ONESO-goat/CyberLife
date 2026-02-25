@@ -32,7 +32,7 @@ public:
             oss << "Brian have reached max limit: %f", this->brain_size;
             throw std::invalid_argument(oss.str());
         }
-        this->watts = this->watts + by;
+        this->watts = this->watts + by;f"
     }
 
 };

@@ -46,17 +46,14 @@ class Joy(Emotion):
         }
 
     def _feeling_happy(self, data: Dict) -> bool:
-        print("="*50)
-        print("IN [_feeling_happy]\n")
-        print("="*50)
+
         emo = []
         for list_ in self.subclass.values():
             for char in list_:
                 emo.append(char)
-        
-        print(f"[_feeling_happy]: emo = {emo}\n")
+
         yes_or_not = data['emotion']
-        print(f"yes_or_not {yes_or_not}")
+
         if not yes_or_not or yes_or_not == None:
             raise ValueError(f"\nData ({data}) is wrong, please insert valid data; make sure key is 'emotion' without a 's'")
         if yes_or_not not in self.subclass.keys() and yes_or_not not in emo:
@@ -69,22 +66,16 @@ class Joy(Emotion):
               why: str = '',
               achieve: bool = True,
               priority: int = 1): 
-        
-        print("="*50)
-        print("IN [joy] FUNCTION")
-        print("="*50)
-        
+
         JOY = 'joy'
         self.subemotions['joy'] += Emotion_adjust_by
-        print(f"DATA: {data}")
 
         if data is not None:
-            print("="*30)
-            print("DATA IS NOT NONE")
-            print("="*30)
             emotion = data.get('emotion', None)
+
             if not emotion:
                 raise ValueError(f"missing emotion key: {data}") 
+            
             data['emotion'] = {
                 JOY: {"regulation": np.zeros((4,4))}
             }
@@ -108,7 +99,6 @@ class Joy(Emotion):
             data['priority'] = {
                 priority: matter
             }
-            print(f"MATTER {matter}")
 
             if why.strip() != '':
                 data['why_this_feeling'] = why
@@ -116,8 +106,6 @@ class Joy(Emotion):
                 data['why_this_feeling'] = """You feel this way for an unknown reason."""            
 
             if achieve:
-                print("WE ARE ACHIEVING NEW DATA\n")
-                print(f"NEW DATA {data}")
                 return data
 
     def excitement(self, 
@@ -218,9 +206,7 @@ class Joy(Emotion):
               why: str = '',
               achieve: bool = True,
               priority: int = 1): 
-        print("="*40)
-        print("INSIDE [pride] FUNCTION in Inside_out.py")
-        print("="*40)
+
         PRIDE = 'pride'
         self.subemotions['pride'] += Emotion_adjust_by
 
@@ -229,9 +215,10 @@ class Joy(Emotion):
             if not emotion:
                 raise ValueError(f"missing emotion key: {data}") 
             data['emotion'] = {
-                PRIDE: {"regulation": np.array(np.zeros((4,4)), dtype=np.float64)}
+                PRIDE: {"regulation": np.zeros((4,4))}
             }
-            
+            data['emotion'][PRIDE]['regulation'].flags.writeable = True
+
             """Emotions can vary. should look like this:
             
             [0.0 0.0 0.0 0.0] # top row focuses on emotion control (tenisty of this emotion), Responsible for high-level emotional control, decision-making, and rational thought.
@@ -247,7 +234,7 @@ class Joy(Emotion):
                 matter = 0.25
             else:
                 raise ValueError(f"Priority ({priority}) is invalid. Please choose from 1 - 2 - 3.")
-            print(f'MATTER: {matter}')
+            
             data['priority'] = {
                 priority: matter
             }
@@ -261,12 +248,8 @@ class Joy(Emotion):
                 return data
             
     def happy_keyword_query(self, emotion: str, data: Optional[Dict[str, Any]] = None):
-        print("="*50)
-        print("INSIDE [happy_keyword_query] in Inside_out.py")
-        print("="*50)
-        emotion = emotion.lower()
-        print(f"[happy_keyword_query] EMOTION: {emotion}")
 
+        emotion = emotion.lower()
         function = {
             'pride': self.pride,
             'joy': self.joy,
@@ -274,20 +257,13 @@ class Joy(Emotion):
             'excitement': self.excitement
         }
         try:
-            print("LOOPING IN happy_keyword_query")
             for emotion_, list_ in self.subclass.items():
-                print(f"CURRENT EMOTION_ {emotion_}\n")
+
                 if emotion == emotion_:
-                    print(f"MATCHES: {emotion}/{emotion_}\n")
-                    print(f"running: function[{emotion_.lower()}](Emotion_adjust_by=1.0, data=data)\n")
                     return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
                 else:
-                    print("LOOPING LIST\n")
                     for char in list_:
-                        print(f"CURRENT CHAR: {char}\n")
                         if char == emotion:
-                            print(f"MATCHES {char}/{emotion}\n")
-                            print(f"running: function[{emotion_.lower()}](Emotion_adjust_by=1.0, data=data)\n")
                             return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
         except RuntimeError as e:
             raise RuntimeError(f"There was an error while querying for keywords for happiness: {e}")
@@ -333,10 +309,16 @@ class Sadness(Emotion):
     
     def _feeling_upset(self, data: Dict) -> bool:
         
+        emo = []
+        for list_ in self.subclass.values():
+            for char in list_:
+                emo.append(char)
+
         yes_or_not = data['emotion']
+
         if not yes_or_not or yes_or_not == None:
-            raise ValueError(f"Data ({data}) is wrong, please insert valid data.")
-        if yes_or_not not in self.subclass.keys():
+            raise ValueError(f"\nData ({data}) is wrong, please insert valid data; make sure key is 'emotion' without a 's'")
+        if yes_or_not not in self.subclass.keys() and yes_or_not not in emo:
             return False
         return True
 
@@ -344,7 +326,7 @@ class Sadness(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         """
         Docstring for upset
@@ -391,8 +373,7 @@ class Sadness(Emotion):
             if why.strip() != '':
                 data['why_this_feeling'] = why
             else: 
-                data['why_this_feeling'] = 'unkown'
-            
+                data['why_this_feeling'] = """You feel this way for an unknown reason."""            
 
             if achieve:
                 return data
@@ -406,7 +387,7 @@ class Sadness(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         DISAPPOINTED = 'disappointment'
@@ -452,7 +433,7 @@ class Sadness(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         GRIEF = 'greif'
@@ -498,7 +479,7 @@ class Sadness(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         LONELINESS = 'loneliness'
@@ -539,6 +520,28 @@ class Sadness(Emotion):
 
             if achieve:
                 return data
+    
+    def sad_keyword_query(self, emotion: str, data: Optional[Dict[str, Any]] = None):
+
+        emotion = emotion.lower()
+        function = {
+            'loneliness': self.loneliness,
+            'greif': self.grief,
+            'upset': self.upset,
+            'disappointment': self.disappointment
+        }
+        try:
+            for emotion_, list_ in self.subclass.items():
+
+                if emotion == emotion_:
+                    return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+                else:
+                    for char in list_:
+                        if char == emotion:
+                            return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+        except RuntimeError as e:
+            raise RuntimeError(f"There was an error while querying for keywords for Sadness: {e}")
+                
             
     def increase(self, amount: float):
         """Increase overall happiness."""
@@ -570,24 +573,52 @@ class Anger(Emotion):
     def __init__(self):
         super().__init__("Anger")
 
-        self.subclass: List[str] = self.get_keywords()
+        self.subclass = self.get_keywords()
         
         self.level: float = 0.0
 
         self.subemotions = {
+            'angry': 0.0,
             'frustration': 0.0,
             'rage': 0.0,
             'irritation': 0.0,
             'resentment': 0.0
         }
+    def anger_keyword_query(self, emotion: str, data: Optional[Dict[str, Any]] = None):
+
+        emotion = emotion.lower()
+        function = {
+            'angry': self.angry,
+            'frustration': self.frustration,
+            'rage': self.rage,
+            'iritation': self.irritation,
+            'resentment': self.resentment
+        }
+        try:
+            for emotion_, list_ in self.subclass.items():
+
+                if emotion == emotion_:
+                    return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+                else:
+                    for char in list_:
+                        if char == emotion:
+                            return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+        except RuntimeError as e:
+            raise RuntimeError(f"There was an error while querying for keywords for anger: {e}")
+                
 
     def _feeling_angry(self, data: Dict[str, str]) -> bool:
 
-        yes_or_not = data['emotion']
-        if not yes_or_not or yes_or_not == None:
-            raise ValueError(f"Data ({data}) is wrong, please insert valid data.")
+        emo = []
+        for list_ in self.subclass.values():
+            for char in list_:
+                emo.append(char)
 
-        if yes_or_not not in self.subclass:
+        yes_or_not = data['emotion']
+
+        if not yes_or_not or yes_or_not == None:
+            raise ValueError(f"\nData ({data}) is wrong, please insert valid data; make sure key is 'emotion' without a 's'")
+        if yes_or_not not in self.subclass.keys() and yes_or_not not in emo:
             return False
         return True
     
@@ -595,7 +626,7 @@ class Anger(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         FRUSTRATION = 'frustration'
@@ -641,7 +672,7 @@ class Anger(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         RAGE = 'rage'
@@ -682,12 +713,58 @@ class Anger(Emotion):
 
             if achieve:
                 return data
+    def angry(self, 
+              Emotion_adjust_by: float, 
+              data: Optional[Dict[str, Any]] = None,
+              why: str = '',
+              achieve: bool = True,
+              priority: int = 1): 
+        
+        ANGRY = 'angry'
+        self.subemotions['angry'] += Emotion_adjust_by
 
+        if data is not None:
+            emotion = data.get('emotion', None)
+            if not emotion:
+                raise ValueError(f"missing emotion key: {data}") 
+            data['emotion'] = {
+                ANGRY: {"regulation": np.zeros((4,4))}
+            }
+            
+            """Emotions can vary. should look like this:
+            
+            [0.0 0.0 0.0 0.0] # top row focuses on emotion control (tenisty of this emotion), Responsible for high-level emotional control, decision-making, and rational thought.
+            [0.0 0.0 0.0 0.0] # 2nd row focuses on physiological responses
+            [0.0 0.0 0.0 0.0] # 3rd row focuses on facial expression (implement system for face plates in the future)
+            [0.0 0.0 0.0 0.0] # Reward Circuitry, Involves the dopamine-rich ventral tegmental area and ventral striatum. # forebrain feature 
+            """
+            if priority == 1:
+                matter = 1.0
+            elif priority == 2:
+                matter = 0.5
+            elif priority == 3:
+                matter = 0.25
+            else:
+                raise ValueError(f"Priority ({priority}) is invalid. Please choose from 1 - 2 - 3.")
+            
+            data['priority'] = {
+                priority: matter
+            }
+
+            if why.strip() != '':
+                data['why_this_feeling'] = why
+            else: 
+                data['why_this_feeling'] = """You feel this way for an unknown reason."""            
+
+            if achieve:
+
+                return data
+            
     def irritation(self, 
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         IRRITATION = 'irritation'
@@ -733,7 +810,7 @@ class Anger(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         RESENTMENT = 'resentment'
@@ -788,14 +865,14 @@ class Anger(Emotion):
         return self.level
     
     
-    def get_keywords(self) -> List[str]:
-        return [
-            'angry', 'anger', 'mad',
-            'frustrated', 'frustration',
-            'furious', 'rage',
-            'irritated', 'irritation',
-            'resentful', 'resentment'
-        ]
+    def get_keywords(self) -> Dict[str, list]:
+        return {
+            'angry':[ 'anger', 'mad'],
+            'frustrated':['frustration'],
+            'rage':['furious'],
+            'irritation': ['irritated'],
+            'resentment': ['resentful']
+        }
 
     def __repr__(self) -> str:
         return f"""Angry=[{self.subclass}]"""
@@ -805,7 +882,7 @@ class Fear(Emotion):
     def __init__(self):
         super().__init__("Fear")
 
-        self.subclass: List[str] = self.get_keywords()
+        self.subclass: Dict[str, list[str]] = self.get_keywords()
         
         self.level: float = 0.0
 
@@ -815,13 +892,40 @@ class Fear(Emotion):
             'worry': 0.0,
             'dread': 0.0
         }
+    def fear_keyword_query(self, emotion: str, data: Optional[Dict[str, Any]] = None):
+
+        emotion = emotion.lower()
+        function = {
+            'panic': self.panic,
+            'anxiety': self.anxiety,
+            'worry': self.worry,
+            'dread': self.dread
+        }
+        try:
+            for emotion_, list_ in self.subclass.items():
+
+                if emotion == emotion_:
+                    return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+                else:
+                    for char in list_:
+                        if char == emotion:
+                            return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+        except RuntimeError as e:
+            raise RuntimeError(f"There was an error while querying for keywords for fear: {e}")
+                
 
     def _feeling_fear(self, data: Dict) -> bool:
         
+        emo = []
+        for list_ in self.subclass.values():
+            for char in list_:
+                emo.append(char)
+
         yes_or_not = data['emotion']
+
         if not yes_or_not or yes_or_not == None:
-            raise ValueError(f"Data ({data}) is wrong, please insert valid data.")
-        if yes_or_not not in self.subclass:
+            raise ValueError(f"\nData ({data}) is wrong, please insert valid data; make sure key is 'emotion' without a 's'")
+        if yes_or_not not in self.subclass.keys() and yes_or_not not in emo:
             return False
         return True
     
@@ -829,7 +933,7 @@ class Fear(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         ANXIETY = 'anxiety'
@@ -875,7 +979,7 @@ class Fear(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         PANIC = 'panic'
@@ -921,7 +1025,7 @@ class Fear(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         WORRIED = 'worry'
@@ -967,7 +1071,7 @@ class Fear(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         DREAD = 'dread'
@@ -1020,14 +1124,14 @@ class Fear(Emotion):
     def get_level(self) -> float:
         """Current happiness intensity."""
         return self.level
-    def get_keywords(self) -> List[str]:
-        return [
-            'fearful', 'fear', 'afraid', 'scared',
-            'anxious', 'anxiety',
-            'panicked', 'panic',
-            'worried', 'worry',
-            'dreadful', 'dread'
-        ]
+    def get_keywords(self) -> Dict[str, list[str]]:
+        return {
+            'fearful': ['fear', 'afraid', 'scared'],
+            'anxiety': ['anxious'],
+            'panic': ['panicked'],
+            'worry':[ 'worried'],
+            'dread':['dreadful']
+        }
 
     def __repr__(self) -> str:
         return f"""Fear=[{self.subclass}]"""
@@ -1037,7 +1141,7 @@ class Surprise(Emotion):
     def __init__(self):
         super().__init__("Surprise")
 
-        self.subclass: List[str] = self.get_keywords()
+        self.subclass: Dict[str, list[str]] = self.get_keywords()
         
         self.level: float = 0.0
 
@@ -1047,20 +1151,47 @@ class Surprise(Emotion):
             'confusion': 0.0,
             'curiosity': 0.0
         }
+    def shock_keyword_query(self, emotion: str, data: Optional[Dict[str, Any]] = None):
 
+        emotion = emotion.lower()
+        function = {
+            'shock': self.shock,
+            'amazement': self.amazement,
+            'confusion': self.confusion,
+            'curiosity': self.curiosity
+        }
+        try:
+            for emotion_, list_ in self.subclass.items():
+
+                if emotion == emotion_:
+                    return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+                else:
+                    for char in list_:
+                        if char == emotion:
+                            return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+        except RuntimeError as e:
+            raise RuntimeError(f"There was an error while querying for keywords for shock: {e}")
+                
     def _feeling_surprised(self, data: Dict) -> bool:
         
+        emo = []
+        for list_ in self.subclass.values():
+            for char in list_:
+                emo.append(char)
+
         yes_or_not = data['emotion']
+
         if not yes_or_not or yes_or_not == None:
-            raise ValueError(f"Data ({data}) is wrong, please insert valid data.")
-        if yes_or_not not in self.subclass:
+            raise ValueError(f"\nData ({data}) is wrong, please insert valid data; make sure key is 'emotion' without a 's'")
+        if yes_or_not not in self.subclass.keys() and yes_or_not not in emo:
             return False
         return True
+    
     def shock(self, 
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         SHOCK = 'shock'
@@ -1102,17 +1233,146 @@ class Surprise(Emotion):
             if achieve:
                 return data
 
-    def amazement(self, Emotion_adjust_by: float):
-        # TODO
-        pass
+    def amazement(self, 
+              Emotion_adjust_by: float, 
+              data: Optional[Dict[str, Any]] = None,
+              why: str = '',
+              achieve: bool = True,
+              priority: int = 1):
+        A = 'amazement'
+        self.subemotions['amazement'] += Emotion_adjust_by
 
-    def confusion(self, Emotion_adjust_by: float):
-        # TODO
-        pass
+        if data is not None:
+            emotion = data.get('emotion', None)
 
-    def curiosity(self, Emotion_adjust_by: float):
-        # TODO
-        pass
+            if not emotion:
+                raise ValueError(f"missing emotion key: {data}") 
+            
+            data['emotion'] = {
+                A: {"regulation": np.zeros((4,4))}
+            }
+            
+            """Emotions can vary. should look like this:
+            
+            [0.0 0.0 0.0 0.0] # top row focuses on emotion control (tenisty of this emotion), Responsible for high-level emotional control, decision-making, and rational thought.
+            [0.0 0.0 0.0 0.0] # 2nd row focuses on physiological responses
+            [0.0 0.0 0.0 0.0] # 3rd row focuses on facial expression (implement system for face plates in the future)
+            [0.0 0.0 0.0 0.0] # Reward Circuitry, Involves the dopamine-rich ventral tegmental area and ventral striatum. # forebrain feature 
+            """
+            if priority == 1:
+                matter = 1.0
+            elif priority == 2:
+                matter = 0.5
+            elif priority == 3:
+                matter = 0.25
+            else:
+                raise ValueError(f"Priority ({priority}) is invalid. Please choose from 1 - 2 - 3.")
+            
+            data['priority'] = {
+                priority: matter
+            }
+
+            if why.strip() != '':
+                data['why_this_feeling'] = why
+            else: 
+                data['why_this_feeling'] = """You feel this way for an unknown reason."""            
+
+            if achieve:
+                return data
+
+    def confusion(self, 
+              Emotion_adjust_by: float, 
+              data: Optional[Dict[str, Any]] = None,
+              why: str = '',
+              achieve: bool = True,
+              priority: int = 1):
+        A = 'confusion'
+        self.subemotions['confusion'] += Emotion_adjust_by
+
+        if data is not None:
+            emotion = data.get('emotion', None)
+
+            if not emotion:
+                raise ValueError(f"missing emotion key: {data}") 
+            
+            data['emotion'] = {
+                A: {"regulation": np.zeros((4,4))}
+            }
+            
+            """Emotions can vary. should look like this:
+            
+            [0.0 0.0 0.0 0.0] # top row focuses on emotion control (tenisty of this emotion), Responsible for high-level emotional control, decision-making, and rational thought.
+            [0.0 0.0 0.0 0.0] # 2nd row focuses on physiological responses
+            [0.0 0.0 0.0 0.0] # 3rd row focuses on facial expression (implement system for face plates in the future)
+            [0.0 0.0 0.0 0.0] # Reward Circuitry, Involves the dopamine-rich ventral tegmental area and ventral striatum. # forebrain feature 
+            """
+            if priority == 1:
+                matter = 1.0
+            elif priority == 2:
+                matter = 0.5
+            elif priority == 3:
+                matter = 0.25
+            else:
+                raise ValueError(f"Priority ({priority}) is invalid. Please choose from 1 - 2 - 3.")
+            
+            data['priority'] = {
+                priority: matter
+            }
+
+            if why.strip() != '':
+                data['why_this_feeling'] = why
+            else: 
+                data['why_this_feeling'] = """You feel this way for an unknown reason."""            
+
+            if achieve:
+                return data
+
+    def curiosity(self, 
+              Emotion_adjust_by: float, 
+              data: Optional[Dict[str, Any]] = None,
+              why: str = '',
+              achieve: bool = True,
+              priority: int = 1):
+        A = 'curiosity'
+        self.subemotions['curiosity'] += Emotion_adjust_by
+
+        if data is not None:
+            emotion = data.get('emotion', None)
+
+            if not emotion:
+                raise ValueError(f"missing emotion key: {data}") 
+            
+            data['emotion'] = {
+                A: {"regulation": np.zeros((4,4))}
+            }
+            
+            """Emotions can vary. should look like this:
+            
+            [0.0 0.0 0.0 0.0] # top row focuses on emotion control (tenisty of this emotion), Responsible for high-level emotional control, decision-making, and rational thought.
+            [0.0 0.0 0.0 0.0] # 2nd row focuses on physiological responses
+            [0.0 0.0 0.0 0.0] # 3rd row focuses on facial expression (implement system for face plates in the future)
+            [0.0 0.0 0.0 0.0] # Reward Circuitry, Involves the dopamine-rich ventral tegmental area and ventral striatum. # forebrain feature 
+            """
+            if priority == 1:
+                matter = 1.0
+            elif priority == 2:
+                matter = 0.5
+            elif priority == 3:
+                matter = 0.25
+            else:
+                raise ValueError(f"Priority ({priority}) is invalid. Please choose from 1 - 2 - 3.")
+            
+            data['priority'] = {
+                priority: matter
+            }
+
+            if why.strip() != '':
+                data['why_this_feeling'] = why
+            else: 
+                data['why_this_feeling'] = """You feel this way for an unknown reason."""            
+
+            if achieve:
+                return data
     def increase(self, amount: float):
         """Increase overall happiness."""
         self.level = min(10.0, self.level + amount)
@@ -1125,14 +1385,13 @@ class Surprise(Emotion):
         """Current happiness intensity."""
         return self.level
     
-    def get_keywords(self) -> List[str]:
-        return [
-            'surprised', 'surprise',
-            'shocked', 'shock',
-            'amazed', 'amazement',
-            'confused', 'confusion',
-            'curious', 'curiosity'
-        ]
+    def get_keywords(self) -> Dict[str, list[str]]:
+        return {
+            'shock': ['surprised', 'surprise','shocked'],
+            'amazement':['amazed'],
+            'confusion': ['confused'],
+            'curiosity':[ 'confusion']
+        }
     def __repr__(self) -> str:
         return f"""Surprise=[{self.subclass}]"""
 
@@ -1141,7 +1400,7 @@ class Disgust(Emotion):
     def __init__(self):
         super().__init__("Disgust")
 
-        self.subclass: List[str] = self.get_keywords()
+        self.subclass: Dict[str, list[str]] = self.get_keywords()
 
         self.level: float = 0.0
 
@@ -1151,12 +1410,40 @@ class Disgust(Emotion):
             'aversion': 0.0,
             'disapproval': 0.0
         }
+    def disgust_keyword_query(self, emotion: str, data: Optional[Dict[str, Any]] = None):
+
+        emotion = emotion.lower()
+        function = {
+            'revulsion': self.revulsion,
+            'contempt': self.contempt,
+            'aversion': self.aversion,
+            'disapproval': self.disapproval
+        }
+        try:
+            for emotion_, list_ in self.subclass.items():
+
+                if emotion == emotion_:
+                    return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+                else:
+                    for char in list_:
+                        if char == emotion:
+                            return function[emotion_.lower()](Emotion_adjust_by=1.0, data=data)
+        except RuntimeError as e:
+            raise RuntimeError(f"There was an error while querying for keywords for Disgust: {e}")
+                
 
     def _feeling_disgust(self, data: Dict) -> bool:
+
+        emo = []
+        for list_ in self.subclass.values():
+            for char in list_:
+                emo.append(char)
+
         yes_or_not = data['emotion']
+
         if not yes_or_not or yes_or_not == None:
-            raise ValueError(f"Data ({data}) is wrong, please insert valid data.")
-        if yes_or_not not in self.subclass:
+            raise ValueError(f"\nData ({data}) is wrong, please insert valid data; make sure key is 'emotion' without a 's'")
+        if yes_or_not not in self.subclass.keys() and yes_or_not not in emo:
             return False
         return True
     
@@ -1164,7 +1451,7 @@ class Disgust(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         REVULSION = 'revulsion'
@@ -1210,7 +1497,7 @@ class Disgust(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         CONTEMPT = 'contempt'
@@ -1256,7 +1543,7 @@ class Disgust(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         AVERSION = 'aversion'
@@ -1302,7 +1589,7 @@ class Disgust(Emotion):
               Emotion_adjust_by: float, 
               data: Optional[Dict[str, Any]] = None,
               why: str = '',
-              achieve: bool = False,
+              achieve: bool = True,
               priority: int = 1): 
         
         DISAPPROVAL = 'disapproval'
@@ -1356,14 +1643,14 @@ class Disgust(Emotion):
         """Current happiness intensity."""
         return self.level
     
-    def get_keywords(self) -> List[str]:
-        return [
-            'disgusted', 'disgust',
-            'revolted', 'revulsion',
-            'contempt', 'contemptuous',
-            'aversion',
-            'disapproval', 'disapproving'
-        ]
+    def get_keywords(self) -> Dict[str, list[str]]:
+        return {
+            'disgust':[ 'disgusted'],
+            'revulsion': ['revolted'],
+            'contempt': ['contemptuous'],
+            'aversion':[],
+            'disapproval': [ 'disapproving']
+        }
     
     def __repr__(self) -> str:
         return f"""Disgust=[{self.subclass}]"""
@@ -1417,15 +1704,15 @@ class RileyAnderson:
         if self.Joy._feeling_happy(data):
             test = self.Joy.happy_keyword_query(emotion=data['emotion'], data=data)
         elif self.Anger._feeling_angry(data):
-            pass
+            test = self.Anger.anger_keyword_query(emotion=data['emotion'], data=data)
         elif self.Sadness._feeling_upset(data):
-            pass
+            test = self.Sadness.sad_keyword_query(emotion=data['emotion'], data=data)
         elif self.Disgust._feeling_disgust(data):
-            pass
+            test = self.Disgust.disgust_keyword_query(emotion=data['emotion'], data=data)
         elif self.Surprise._feeling_surprised(data):
-            pass
+            test = self.Surprise.shock_keyword_query(emotion=data['emotion'], data=data)
         elif self.Fear._feeling_fear(data):
-            pass
+            test = self.Fear.fear_keyword_query(emotion=data['emotion'], data=data)
         else:
             raise RuntimeError("Data doesn't fit any emotions, please double check.")
         return test

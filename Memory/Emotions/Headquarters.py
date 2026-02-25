@@ -1,8 +1,10 @@
+# Headquarters.py
+
 import numpy as np
 import uuid
-
+import copy
 from Excepts_and_hints import InvalidEmotion, InvalidRow, ValidEmotion, NoArgumentCalled_or_AllNone
-from numpy_utils.numpy_helpers import serialize_numpy
+from numpy_utils.numpy_helpers import serialize_numpy, deserialize_numpy
 from typing import Protocol, Optional, Tuple, Dict, Any
 
 class Orb(Protocol):
@@ -11,17 +13,17 @@ class Orb(Protocol):
 
 class ValidStructure:
     def __init__(self, row: np.ndarray):
-        print(f"__INIT__: {row}\n")
+        
         row = row.copy()
         self.validate_row(row)
 
     def validate_row(self, row: np.ndarray):
         # Check that it’s a NumPy array
-        print("IN [validate_row] inside Headquarters.py\n")
+       
         if not isinstance(row, np.ndarray):
             raise InvalidRow("Row must be a Numpy array")
 
-        print(f"CURRENT shape: {row.shape}")
+       
         # Check shape
         if row.shape != (4,4):
             raise InvalidRow(
@@ -75,13 +77,13 @@ class Prefrontal_Control(ValidStructure):
     def __init__(self,focused_memory, row: np.ndarray, Brain):
         super().__init__(row=row)
         self.focused_memory = focused_memory
-        self.focused_memory_copy = focused_memory
+        self.focused_memory_copy = copy.deepcopy(focused_memory)
         
         self.emotion = list(self.focused_memory.get('emotion', 0).keys())[0]
         self.memory_shortcut = self.focused_memory['emotion'][self.emotion]['regulation'][0]
         self.first_row = np.array(row[0], dtype=np.float64) 
         self.first_row.flags.writeable = True
-        print(f"[Prefrontal_Control] self.first_row = {self.first_row}")
+       
         """The first row inside memory (4x4) array."""
 
         #self.current_emotion = current_emotion.lower()
@@ -99,7 +101,7 @@ class Prefrontal_Control(ValidStructure):
             raise TypeError("index must be an integer")
         
         target = self.first_row[index]
-        print(f"0: {target}")
+       
 
         if accelerate[0] and accelerate[1] > 0:
             by *= accelerate[1]
@@ -107,19 +109,24 @@ class Prefrontal_Control(ValidStructure):
             raise ValueError("Invaid acclertation amount.")
 
         target += by
-        print(f"1: {target}\n")
+
         target = np.round(target, 4)
-        print(f"2: {target}\n")
+
         target = max(0.0, min(target, 1.0))
-        print(f"3: {target}")
+
 
         self.first_row[index] = target
-        print(f"NEW TARGET: {self.first_row}\n")
-        print(f"REGULATION: {self.focused_memory_copy['emotion'][self.emotion]['regulation']}")
-        print(f"TARGET: {self.focused_memory_copy['emotion'][self.emotion]['regulation'][0]}")
-        self.focused_memory_copy['emotion'][self.emotion]['regulation'][0] = np.array(self.first_row)
-        print(f"MEMORY COPY: {self.focused_memory_copy}\n")
+        
+        current_regulation = self.focused_memory_copy['emotion'][self.emotion]['regulation']
+    
+        new_regulation = np.array(current_regulation, dtype=np.float64)
+
+        new_regulation[0] = self.first_row
+    
+        self.focused_memory_copy['emotion'][self.emotion]['regulation'] = new_regulation
+    
         self.Brain.mind.replace(old=self.focused_memory, new=self.focused_memory_copy,auto_save=True)
+        
         if auto:
             self.Brain.mind.commit()
         if get:
@@ -134,9 +141,16 @@ class Prefrontal_Control(ValidStructure):
     
 class  Physiological_Response(ValidStructure):
 
-    def __init__(self, row: np.ndarray, Brain):
+    def __init__(self,focused_memory, row: np.ndarray, Brain):
         super().__init__(row=row)
-        self.second_row = row.copy()
+        self.focused_memory = focused_memory
+        self.focused_memory_copy = focused_memory
+        
+        self.emotion = list(self.focused_memory.get('emotion', 0).keys())[0]
+        self.memory_shortcut = self.focused_memory['emotion'][self.emotion]['regulation'][0]
+        self.second_row = np.array(row[1], dtype=np.float64) 
+        self.second_row.flags.writeable = True
+       
         """The second row inside memory (4x4) array."""
 
         #self.current_emotion = current_emotion.lower()
@@ -144,9 +158,9 @@ class  Physiological_Response(ValidStructure):
         self.Brain = Brain
 
     
-    def adjust(self, by: float, index: int = 0, auto=False,
+    def adjust(self, by: float, index: int = 0, auto: bool = True,
            accelerate: Tuple[bool, float] = (False, 0), get: bool = True):
-        print(self.second_row.flags)
+        
 
         by = float(by)
 
@@ -154,6 +168,7 @@ class  Physiological_Response(ValidStructure):
             raise TypeError("index must be an integer")
         
         target = self.second_row[index]
+        
 
         if accelerate[0] and accelerate[1] > 0:
             by *= accelerate[1]
@@ -161,11 +176,26 @@ class  Physiological_Response(ValidStructure):
             raise ValueError("Invaid acclertation amount.")
 
         target += by
-        target = round(target, 4)
+
+        target = np.round(target, 4)
+
         target = max(0.0, min(target, 1.0))
 
-        self.second_row[index] = target
 
+        self.second_row[index] = target
+        
+        current_regulation = self.focused_memory_copy['emotion'][self.emotion]['regulation']
+    
+        new_regulation = np.array(current_regulation, dtype=np.float64)
+
+        new_regulation[1] = self.second_row
+    
+        self.focused_memory_copy['emotion'][self.emotion]['regulation'] = new_regulation
+    
+ 
+
+        self.Brain.mind.replace(old=self.focused_memory, new=self.focused_memory_copy,auto_save=True)
+        
         if auto:
             self.Brain.mind.commit()
         if get:
@@ -203,17 +233,26 @@ class Expression__Communication(ValidStructure):
 
 
 """
-    def __init__(self, row: np.ndarray, Brain):
+    def __init__(self,focused_memory, row: np.ndarray, Brain):
         super().__init__(row=row)
-        self.third_row = row.copy()
+        self.focused_memory = focused_memory
+        self.focused_memory_copy = focused_memory
+        
+        self.emotion = list(self.focused_memory.get('emotion', 0).keys())[0]
+        self.memory_shortcut = self.focused_memory['emotion'][self.emotion]['regulation'][0]
+        self.third_row = np.array(row[2], dtype=np.float64) 
+        self.third_row.flags.writeable = True
+       
         """The third row inside memory (4x4) array."""
+
+        #self.current_emotion = current_emotion.lower()
 
         self.Brain = Brain
 
     
-    def adjust(self, by: float, index: int = 0, auto=False,
+    def adjust(self, by: float, index: int = 0, auto: bool = True,
            accelerate: Tuple[bool, float] = (False, 0), get: bool = True):
-        print(self.third_row.flags)
+        
 
         by = float(by)
 
@@ -222,17 +261,32 @@ class Expression__Communication(ValidStructure):
         
         target = self.third_row[index]
 
+
         if accelerate[0] and accelerate[1] > 0:
             by *= accelerate[1]
         elif accelerate[0] and accelerate[1] <= 0:
             raise ValueError("Invaid acclertation amount.")
 
         target += by
-        target = round(target, 4)
+
+        target = np.round(target, 4)
+
         target = max(0.0, min(target, 1.0))
 
-        self.third_row[index] = target
 
+        self.third_row[index] = target
+        
+        current_regulation = self.focused_memory_copy['emotion'][self.emotion]['regulation']
+    
+        new_regulation = np.array(current_regulation, dtype=np.float64)
+
+        new_regulation[2] = self.third_row
+    
+        self.focused_memory_copy['emotion'][self.emotion]['regulation'] = new_regulation
+    
+ 
+
+        self.Brain.mind.replace(old=self.focused_memory, new=self.focused_memory_copy,auto_save=True)
         if auto:
             self.Brain.mind.commit()
         if get:
@@ -273,17 +327,26 @@ class Dopamine(ValidStructure):
     [0.1, 0.5, -0.4, 0.1]  # Negative outcome, expected neutral, bad surprise, strong avoidance
     
     """
-    def __init__(self, row: np.ndarray, Brain):
+    def __init__(self,focused_memory, row: np.ndarray, Brain):
         super().__init__(row=row)
-        self.fourth_row = row.copy()
-        """The third row inside memory (4x4) array."""
+        self.focused_memory = focused_memory
+        self.focused_memory_copy = focused_memory
+        
+        self.emotion = list(self.focused_memory.get('emotion', 0).keys())[0]
+        self.memory_shortcut = self.focused_memory['emotion'][self.emotion]['regulation'][0]
+        self.fourth_row = np.array(row[3], dtype=np.float64) 
+        self.fourth_row.flags.writeable = True
+       
+        """The first row inside memory (4x4) array."""
+
+        #self.current_emotion = current_emotion.lower()
 
         self.Brain = Brain
 
     
-    def adjust(self, by: float, index: int = 0, auto=False,
+    def adjust(self, by: float, index: int = 0, auto: bool = True,
            accelerate: Tuple[bool, float] = (False, 0), get: bool = True):
-        print(self.fourth_row.flags)
+        
 
         by = float(by)
 
@@ -292,17 +355,32 @@ class Dopamine(ValidStructure):
         
         target = self.fourth_row[index]
 
+
         if accelerate[0] and accelerate[1] > 0:
             by *= accelerate[1]
         elif accelerate[0] and accelerate[1] <= 0:
             raise ValueError("Invaid acclertation amount.")
 
         target += by
-        target = round(target, 4)
+
+        target = np.round(target, 4)
+
         target = max(0.0, min(target, 1.0))
 
-        self.fourth_row[index] = target
 
+        self.fourth_row[index] = target
+        
+        current_regulation = self.focused_memory_copy['emotion'][self.emotion]['regulation']
+    
+        new_regulation = np.array(current_regulation, dtype=np.float64)
+
+        new_regulation[3] = self.fourth_row
+    
+        self.focused_memory_copy['emotion'][self.emotion]['regulation'] = new_regulation
+    
+ 
+
+        self.Brain.mind.replace(old=self.focused_memory, new=self.focused_memory_copy,auto_save=True)
         if auto:
             self.Brain.mind.commit()
         if get:
@@ -331,54 +409,92 @@ class EmotionRegulation:
     Based on actual neuroscience.
     """
     
-    def __init__(self, emotion_type: str):
+    def __init__(self, emotion_type: str,Brain, focused_memory, 
+                 amount: float = 0.0, auto_save: bool = True):
+        
         self.emotion_type = emotion_type.lower()
-        
+        self.focused_memory = focused_memory
+        self.focused_memory_copy = focused_memory
         # 4x4 matrix: [prefrontal, physiological, expression, reward]
-        self.state = np.zeros((4, 4))
-        
+        self.emotion = list(self.focused_memory.get('emotion', 0).keys())[0]
+        self.state = self.focused_memory['emotion'][self.emotion]['regulation']
+        self.Brain = Brain
         # Initialize based on emotion type
-        self._initialize_baseline()
+        self._initialize_baseline(amount=amount, auto_save=auto_save)
     
-    def _initialize_baseline(self):
+    def _initialize_baseline(self, amount: float, auto_save: bool = True):
         """Set baseline values for this emotion."""
         
         baselines = {
-            'pride': {
-                'reward_value': 0.8,       # Positive outcome
-                'approach_tendency': 0.9,  # Want more
-                'arousal': 0.6,           # Energized
-                'energy': 0.8             # Energizing emotion
+            'sad': {
+                'reward_value': amount,       # Positive outcome
+                'approach_tendency': amount,  # Want more
+                'arousal': amount,           # Energized
+                'energy': amount             # Energizing emotion
             },
             'shame': {
-                'reward_value': 0.2,
-                'approach_tendency': 0.1,  # Avoid
-                'arousal': 0.5,
-                'energy': 0.3              # Draining
+                'reward_value': amount,
+                'approach_tendency': amount,  # Avoid
+                'arousal': amount,
+                'energy': amount             # Draining
             },
             'fear': {
-                'reward_value': 0.1,       # Threat
-                'approach_tendency': 0.0,  # Strong avoid
-                'arousal': 0.9,            # High activation
-                'energy': 0.4              # Draining but mobilizing
+                'reward_value': amount,       # Threat
+                'approach_tendency': amount,  # Strong avoid
+                'arousal': amount,            # High activation
+                'energy': amount             # Draining but mobilizing
             },
-            'joy': {
-                'reward_value': 0.9,
-                'approach_tendency': 0.9,
-                'arousal': 0.7,
-                'energy': 0.9
+            'happy': {
+                'reward_value': amount,
+                'approach_tendency': amount,
+                'arousal': amount,
+                'energy': amount
+            },'anger': {
+                'reward_value': amount,
+                'approach_tendency': amount,
+                'arousal': amount,
+                'energy': amount
+            },'surprise': {
+                'reward_value': amount,
+                'approach_tendency': amount,
+                'arousal': amount,
+                'energy':  amount
+            },'disgust': {
+                'reward_value': amount,
+                'approach_tendency': amount,
+                'arousal': amount,
+                'energy': amount
             }
         }
-        
+
+
+    
+        new_regulation = np.array(self.state, dtype=np.float64)
+        print(f"NEW REGULATION: {new_regulation}\n")
+
+    
+
         baseline = baselines.get(self.emotion_type, {})
+        print(f"BASELINE: {baseline}\n")
         
         # Set reward row
-        self.state[3, 0] = baseline.get('reward_value', 0.5)
-        self.state[3, 3] = baseline.get('approach_tendency', 0.5)
+        new_regulation[3, 0] = baseline.get('reward_value', 0.0)
+        new_regulation[3, 3] = baseline.get('approach_tendency', 0.0)
         
         # Set physiological row
-        self.state[1, 0] = baseline.get('arousal', 0.5)
-        self.state[1, 3] = baseline.get('energy', 0.5)
+        new_regulation[1, 0] = baseline.get('arousal', 0.0)
+        new_regulation[1, 3] = baseline.get('energy', 0.0)
+
+        print(f"\nNEW REGULATION: {new_regulation}\n")
+        self.focused_memory_copy['emotion'][self.emotion]['regulation'] = new_regulation
+        print(f"COPY: {self.focused_memory_copy}, NOW REPLACEING...\n")
+        self.Brain.mind.replace(old=self.focused_memory, 
+                                new=self.focused_memory_copy, 
+                                auto_save=True)
+        
+        if auto_save:
+            self.Brain.mind.commit()
+        
     
     def trigger(self, intensity: float, context: dict):
         """
@@ -501,31 +617,32 @@ class EmotionRegulation:
     
 class Headquarters(EmotionRegulation):
     def __init__(self, memories, Brain, Operator: ValidEmotion = 'joy'):
-
+        
         self.Operator = Operator
         self.Brain = Brain
         self.Memory_orbs = memories
         self.focused_memory = None
         self.focused_memory_operator: str = ''
+    
 
 
-
-    def focus(self, memory: Optional[Dict[str, Any]] = None, 
-              id: Optional[uuid.UUID | str] = None):
+    def focus(self, memory: Dict[str, Any] = {}, 
+              id: Optional[uuid.UUID | str] = None, regulation_amount: float = 0.0):
         """Focus on a certain memory"""
-        if id is not None and memory is None:
+        if id is not None and not memory:
             try:
                 there = self.Brain.mind.find(id=id)
-                print(f"[focus] in Headqarters: {there}")
+                print(f"THERE: {there}\n")
                 
-                dom_emotion  = there.get('dominant_emotion', 0)
-                if not dom_emotion:
+                
+                dom_emotion_check  = there.get('dominant_emotion', 0)
+                if not dom_emotion_check:
                     raise InvalidEmotion(f"While focusing on memory, the dominant emotion is invalid; ({there})")
                 emotion = list(there['emotion'].keys())[0]
-                print(f"EMOTION: {emotion}")
+                dom_emotion = there['dominant_emotion']
                 self.focused_memory = there
                 self.focused_memory_operator = dom_emotion.lower()
-                print(f"OPERATORL {self.focused_memory_operator}")
+            
             except RuntimeError as x:
                 raise x
             
@@ -536,9 +653,9 @@ class Headquarters(EmotionRegulation):
                 raise InvalidEmotion(f"While focusing on memory, the dominant emotion is invalid; ({there})")
             
             emotion = list(memory['emotion'].keys())[0]
-            print(f"CURRENT EMOTION: {emotion}")
+            
             self.focused_memory_operator = there.lower()
-            print(f"EMOTION in function [focus] inside Headquarters: {emotion}")
+            
         else:
             raise NoArgumentCalled_or_AllNone("Please choose one out of the two options [memory] or [id]")
         
@@ -546,12 +663,16 @@ class Headquarters(EmotionRegulation):
 
         self.ROW1 = Prefrontal_Control(focused_memory=self.focused_memory, row=self.focused_memory['emotion'][emotion]['regulation'], Brain=self.Brain)
         print(" ✓ ROW1 COMPLETE")
-        self.ROW2 = Physiological_Response(row=self.focused_memory['emotion'][emotion]['regulation'],Brain=self.Brain)
+        self.ROW2 = Physiological_Response(focused_memory=self.focused_memory, row=self.focused_memory['emotion'][emotion]['regulation'],Brain=self.Brain)
         print(" ✓ ROW2 COMPLETE")
-        self.ROW3 = Expression__Communication(row=self.focused_memory['emotion'][emotion]['regulation'], Brain=self.Brain)
+        self.ROW3 = Expression__Communication(focused_memory=self.focused_memory, row=self.focused_memory['emotion'][emotion]['regulation'], Brain=self.Brain)
         print(" ✓ ROW3 COMPLETE")
-        self.ROW4 = Dopamine(row=self.focused_memory['emotion'][emotion]['regulation'], Brain=self.Brain)
+        self.ROW4 = Dopamine(focused_memory=self.focused_memory, row=self.focused_memory['emotion'][emotion]['regulation'], Brain=self.Brain)
         print(" ✓ ROW4 COMPELTE")
+        super().__init__(emotion_type=self.focused_memory_operator, 
+                         focused_memory=self.focused_memory, 
+                         Brain=self.Brain, 
+                         amount=regulation_amount)
 
     def change_mood(self, new_mood: str, reason: str = 'unknown'):
         """
@@ -564,7 +685,7 @@ class Headquarters(EmotionRegulation):
         old_emotion = self.focused_memory_operator
         
         # Create new emotion regulation for new mood
-        new_regulation = EmotionRegulation(new_mood)
+        new_regulation = EmotionRegulation(emotion_type=new_mood, focused_memory=self.focused_memory, Brain=self.Brain)
         new_regulation.trigger(
             intensity=self.focused_memory['emotional_intensity'],
             context={'social': True}
@@ -606,6 +727,18 @@ class Headquarters(EmotionRegulation):
         
         # Commit to storage
         self.Brain.mind.commit()
+
+    def get_regulation_matrix(self, memory):
+        """Get regulation matrix, handling both formats."""
+        emotion = list(memory['emotion'].keys())[0]
+        reg = memory['emotion'][emotion]['regulation']
+        
+        # If serialized, deserialize
+        if isinstance(reg, dict) and '__numpy__' in reg:
+            return deserialize_numpy(reg)
+        
+        # Already numpy array
+        return reg
 
     def total_Dopamine(self) -> float:
         """Get total dopamine level (0.0 to 4.0)."""
